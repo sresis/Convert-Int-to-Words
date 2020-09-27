@@ -55,22 +55,32 @@ def hundred_convert(num):
     'six', 'seven', 'eight', 'nine']
     double_dig = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty',
     'sixty', 'seventy', 'eighty', 'ninety']
-    if num > 100:
-        num_str += single_dig[int(num / 100)] + ' hundred '
+    teens = ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen',
+    'seventeen', 'eighteen', 'nineteen']
+    if num == 0:
+        return
+    if num >= 100:
+        num_str += single_dig[int(num / 100)] + ' hundred'
         string = str(num)
         #reset num to include the numbers after hundred
         num = int(string[1:])
-        
+    if num == 0:
+        return num_str   
     if num > 10:
-        num_str += double_dig[int(num / 10)] 
+        if num_str is not '':
+            num_str += ' '
+        if num < 20:
+            num_str += teens[int(num - 11)]
+            return num_str 
+        else:
+            num_str += double_dig[int(num / 10)] 
         string = str(num)
         #reset num to include the numbers after hundred
         num = int(string[1:])
     if num > 0:
-        num_str += ' ' + single_dig[int(num)]
-    
-
-    
+        if num_str is not '':
+            num_str += ' '
+        num_str += single_dig[int(num)]
     
     return num_str
 
@@ -79,14 +89,47 @@ def num_word(num):
     """Convert word to number."""
     # negative first
     # start at billion
+    if num == 0:
+        return 'zero'
     num_str = ''
     if num < 0:
         num_str += 'negative'
-    if num < 1000:
-        return hundred_convert(num)
+    #now convert num to absolute vaule
+    adj_num = abs(num)
 
+    if adj_num >= 1000000000:
+        if num_str != '':
+            num_str += ' '
+        num_str += hundred_convert(int(adj_num/1000000000)) + ' billion'
+        
+        string = str(adj_num)
+        bil_len = len(string) - 9
+
+        #reset num to include the numbers after bil
+        adj_num = int(string[bil_len:])
+    if adj_num >= 1000000:
+        if num_str != '':
+            num_str += ' '
+        num_str += hundred_convert(int(adj_num/1000000)) + ' million'
+        
+        string = str(adj_num)
+        mil_len = len(string) - 6
+        adj_num = int(string[mil_len:])
+    if adj_num >= 1000:
+        if num_str != '':
+            num_str += ' '
+        num_str += hundred_convert(int(adj_num/1000)) + ' thousand'
+        
+        string = str(adj_num)
+        thou_len = len(string) - 3
+        adj_num = int(string[thou_len:])
+    if adj_num < 1000:
+        if adj_num == 0:
+            return num_str
+        if num_str != '':
+            num_str += ' '
+        num_str += hundred_convert(adj_num)
     
-
     return num_str
 
 if __name__ == '__main__':
