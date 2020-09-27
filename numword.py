@@ -49,10 +49,45 @@ can stop there):
 
 """
 
+def hundred_convert(num):
+    num_str = ''
+    single_dig = ['zero', 'one', 'two', 'three', 'four', 'five',
+    'six', 'seven', 'eight', 'nine']
+    double_dig = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty',
+    'sixty', 'seventy', 'eighty', 'ninety']
+    if num > 100:
+        num_str += single_dig[int(num / 100)] + ' hundred '
+        string = str(num)
+        #reset num to include the numbers after hundred
+        num = int(string[1:])
+        
+    if num > 10:
+        num_str += double_dig[int(num / 10)] 
+        string = str(num)
+        #reset num to include the numbers after hundred
+        num = int(string[1:])
+    if num > 0:
+        num_str += ' ' + single_dig[int(num)]
+    
+
+    
+    
+    return num_str
+
 
 def num_word(num):
     """Convert word to number."""
+    # negative first
+    # start at billion
+    num_str = ''
+    if num < 0:
+        num_str += 'negative'
+    if num < 1000:
+        return hundred_convert(num)
 
+    
+
+    return num_str
 
 if __name__ == '__main__':
     import doctest
